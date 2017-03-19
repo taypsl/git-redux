@@ -1,17 +1,23 @@
 import React from 'react';
+import {connect} from 'react-redux';
 
 import StarRater from './star-rater';
+
 import * as actions from '../actions/index';
-import {connect} from 'react-redux';
 
 export class Repository extends React.Component {
     constructor(props) {
         super(props);
         this.changeRating = this.changeRating.bind(this);
     }
+    //dispatch fetchDiscription to display the description
+    componentDidMount() {
+        this.props.dispatch(
+            actions.fetchDescription(this.props.repository.name)
+        );
+    }
 
     changeRating(rating) {
-        // TODO: Change the rating
         this.props.dispatch(
             actions.rateRepository(this.props.repository.name, rating)
         );
@@ -20,7 +26,7 @@ export class Repository extends React.Component {
     render() {
         return (
             <div className="repository">
-                {this.props.repository.name}
+                {this.props.repository.name} - {this.props.repository.description}
                 &nbsp;
                 <StarRater rating={this.props.repository.rating}
                            onChange={this.changeRating} />
@@ -29,4 +35,28 @@ export class Repository extends React.Component {
     }
 }
 
-export default connect()(Repository)
+export default connect()(Repository);
+// export class Repository extends React.Component {
+//     constructor(props) {
+//         super(props);
+//         this.changeRating = this.changeRating.bind(this);
+//     }
+
+//     changeRating(rating) {
+//         this.props.dispatch(
+//             actions.rateRepository(this.props.repository.name, rating)
+//         );
+//     }
+
+//     render() {
+//         return (
+//             <div className="repository">
+//                 {this.props.repository.name}
+//                 &nbsp;
+//                 <StarRater rating={this.props.repository.rating}
+//                            onChange={this.changeRating} />
+//             </div>
+//         );
+//     }
+// }
+
